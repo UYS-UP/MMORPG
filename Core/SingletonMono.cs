@@ -5,29 +5,10 @@ using UnityEngine;
 
 public class SingletonMono<T> : MonoBehaviour where T : SingletonMono<T>
 {
-    private static T instance;
+    public static T Instance { get; private set; }
 
-    public static T Instance
+    protected virtual void Awake()
     {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindAnyObjectByType<T>();
-                if (instance != null) return instance;
-                var singletonObject = new GameObject();
-                instance = singletonObject.AddComponent<T>();
-                singletonObject.name = $"{typeof(T).Name}";
-            }
-
-            return instance;
-        }
-    }
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this as T;
-        }
+        Instance = this as T;
     }
 }
